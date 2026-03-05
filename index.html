@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Najmul Islam's personal tech blog — Backend Developer & System Design Enthusiast. Articles on OS, Networking, System Design, DSA, Database, and Cloud." />
+  <meta name="keywords" content="tech blog, backend development, system design, DSA, networking, cloud, database" />
+  <meta name="author" content="Najmul Islam" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Najmul Islam — Tech Blog" />
+  <meta property="og:description" content="Backend Developer | System Design Enthusiast" />
+  <meta property="og:type" content="website" />
+
+  <title>Najmul Islam — Tech Blog</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+
+      <!-- Logo / Name -->
+      <a href="index.html" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>Najmul Islam<span class="logo-dot">.</span>dev<span class="logo-bracket">/&gt;</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="https://github.com/najmulislamnajim" target="_blank" rel="noopener noreferrer" class="nav-link nav-github" aria-label="GitHub Profile">
+          <!-- GitHub SVG Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </nav>
+
+      <!-- Right controls: dark mode + hamburger -->
+      <div class="nav-controls">
+        <!-- Dark Mode Toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- Hamburger (mobile) -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="#categories" class="nav-link">Categories</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="https://github.com/najmulislam" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <p class="hero-greeting">Hi, I'm</p>
+      <h1 class="hero-name">Najmul Islam</h1>
+      <p class="hero-tagline">Backend Developer <span class="sep">|</span> System Design Enthusiast</p>
+      <p class="hero-desc">I write about the internals of systems — from OS fundamentals to cloud architecture. Simple words, deep dives.</p>
+    </div>
+  </section>
+
+  <!-- ============ MAIN LAYOUT ============ -->
+  <main class="layout" id="categories">
+    <!-- ---- SIDEBAR ---- -->
+    <aside class="sidebar" id="sidebar" aria-label="Blog categories">
+      <h2 class="sidebar-title">Categories</h2>
+      <ul class="category-list" id="categoryList" role="list">
+        <li>
+          <button class="cat-btn active" data-category="all" aria-pressed="true">
+            <span class="cat-icon">📋</span> All Posts
+            <span class="cat-count" id="count-all">6</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="OS" aria-pressed="false">
+            <span class="cat-icon">🖥️</span> OS
+            <span class="cat-count" id="count-OS">1</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="Networking" aria-pressed="false">
+            <span class="cat-icon">🌐</span> Networking
+            <span class="cat-count" id="count-Networking">1</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="System Design" aria-pressed="false">
+            <span class="cat-icon">🏗️</span> System Design
+            <span class="cat-count" id="count-System Design">1</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="DSA" aria-pressed="false">
+            <span class="cat-icon">🧠</span> DSA
+            <span class="cat-count" id="count-DSA">1</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="Database" aria-pressed="false">
+            <span class="cat-icon">🗄️</span> Database
+            <span class="cat-count" id="count-Database">1</span>
+          </button>
+        </li>
+        <li>
+          <button class="cat-btn" data-category="Cloud" aria-pressed="false">
+            <span class="cat-icon">☁️</span> Cloud
+            <span class="cat-count" id="count-Cloud">1</span>
+          </button>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- ---- BLOG CARDS AREA ---- -->
+    <section class="blog-area" aria-label="Blog posts">
+
+      <!-- Mobile category dropdown -->
+      <div class="mobile-category-bar">
+        <label for="mobileCatSelect" class="sr-only">Filter by category</label>
+        <select id="mobileCatSelect" class="mobile-cat-select" aria-label="Filter posts by category">
+          <option value="all">📋 All Posts</option>
+          <option value="OS">🖥️ OS</option>
+          <option value="Networking">🌐 Networking</option>
+          <option value="System Design">🏗️ System Design</option>
+          <option value="DSA">🧠 DSA</option>
+          <option value="Database">🗄️ Database</option>
+          <option value="Cloud">☁️ Cloud</option>
+        </select>
+      </div>
+
+      <div class="blog-header">
+        <h2 class="blog-section-title" id="sectionTitle">All Posts</h2>
+        <span class="post-count" id="postCount">6 articles</span>
+      </div>
+
+      <!-- Blog Cards Grid -->
+      <div class="blog-grid" id="blogGrid">
+
+        <!-- Card 1: OS -->
+        <article class="blog-card" data-category="OS">
+          <div class="card-top">
+            <span class="badge badge-OS">OS</span>
+            <time class="card-date" datetime="2025-02-15">Feb 15, 2025</time>
+          </div>
+          <h3 class="card-title">How the Linux Kernel Manages Memory</h3>
+          <p class="card-desc">A deep dive into virtual memory, page tables, and how the Linux kernel handles memory allocation — from user space to kernel space.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 8 min read</span>
+            <a href="blog1.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Card 2: Networking -->
+        <article class="blog-card" data-category="Networking">
+          <div class="card-top">
+            <span class="badge badge-Networking">Networking</span>
+            <time class="card-date" datetime="2025-01-28">Jan 28, 2025</time>
+          </div>
+          <h3 class="card-title">TCP/IP Deep Dive: From Handshake to Data Transfer</h3>
+          <p class="card-desc">Understanding the three-way handshake, congestion control, and why TCP is still the backbone of the internet despite its overhead.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 10 min read</span>
+            <a href="blog2.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Card 3: System Design -->
+        <article class="blog-card" data-category="System Design">
+          <div class="card-top">
+            <span class="badge badge-SystemDesign">System Design</span>
+            <time class="card-date" datetime="2025-01-10">Jan 10, 2025</time>
+          </div>
+          <h3 class="card-title">Designing a URL Shortener at Scale</h3>
+          <p class="card-desc">Walk through the system design of a URL shortener — hash functions, database schema, caching strategies, and handling millions of redirects per second.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 12 min read</span>
+            <a href="blog3.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Card 4: DSA -->
+        <article class="blog-card" data-category="DSA">
+          <div class="card-top">
+            <span class="badge badge-DSA">DSA</span>
+            <time class="card-date" datetime="2024-12-20">Dec 20, 2024</time>
+          </div>
+          <h3 class="card-title">Segment Trees Explained with Real Problems</h3>
+          <p class="card-desc">Segment trees are a powerful data structure for range queries. Learn how to build, update, and query them efficiently with concrete examples.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 9 min read</span>
+            <a href="blog4.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Card 5: Database -->
+        <article class="blog-card" data-category="Database">
+          <div class="card-top">
+            <span class="badge badge-Database">Database</span>
+            <time class="card-date" datetime="2024-12-05">Dec 5, 2024</time>
+          </div>
+          <h3 class="card-title">PostgreSQL Indexing Internals: B-Tree to GIN</h3>
+          <p class="card-desc">Indexes are the secret weapon of database performance. Explore how PostgreSQL implements B-Tree, Hash, GIN, and GiST indexes under the hood.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 11 min read</span>
+            <a href="blog5.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+        <!-- Card 6: Cloud -->
+        <article class="blog-card" data-category="Cloud">
+          <div class="card-top">
+            <span class="badge badge-Cloud">Cloud</span>
+            <time class="card-date" datetime="2024-11-18">Nov 18, 2024</time>
+          </div>
+          <h3 class="card-title">AWS S3 Internals: How Object Storage Works</h3>
+          <p class="card-desc">Behind the simple PUT/GET API of S3 lies a sophisticated distributed system. Understand consistency models, replication, and the storage architecture.</p>
+          <div class="card-footer">
+            <span class="read-time">⏱ 7 min read</span>
+            <a href="blog6.html" class="btn-read">Read More →</a>
+          </div>
+        </article>
+
+      </div><!-- /blog-grid -->
+
+      <!-- Empty state (hidden by default) -->
+      <div class="empty-state" id="emptyState" hidden>
+        <span class="empty-icon">📭</span>
+        <p>No posts in this category yet. Check back soon!</p>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-name">&lt;Najmul Islam.dev/&gt;</p>
+      <p class="footer-copy">© 2025 Najmul Islam · Built with ❤️ and plain HTML</p>
+      <div class="footer-links">
+        <a href="https://github.com/najmulislamnajim" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

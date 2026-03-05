@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A deep dive into virtual memory, page tables, and how the Linux kernel handles memory allocation." />
+  <meta name="author" content="Najmul Islam" />
+  <title>How the Linux Kernel Manages Memory — Najmul Islam</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-bracket">&lt;</span>Najmul Islam<span class="logo-dot">.</span>dev<span class="logo-bracket">/&gt;</span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#categories" class="nav-link">Categories</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="https://github.com/najmulislam" target="_blank" rel="noopener noreferrer" class="nav-link nav-github">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </nav>
+      <div class="nav-controls">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="index.html#categories" class="nav-link">Categories</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="https://github.com/najmulislamnajim" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+    </div>
+  </header>
+
+  <!-- BLOG POST -->
+  <article class="post-container">
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <header class="post-header">
+      <div class="post-meta-row">
+        <span class="badge badge-OS">OS</span>
+      </div>
+      <h1 class="post-title">How the Linux Kernel Manages Memory</h1>
+      <div class="post-byline">
+        <span class="post-author">✍️ Najmul Islam</span>
+        <time class="post-date-detail" datetime="2025-02-15">February 15, 2025</time>
+        <span class="post-readtime">⏱ 8 min read</span>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <p>Memory management is one of the most fundamental responsibilities of any operating system. The Linux kernel has a sophisticated, layered approach to handling memory — balancing performance, flexibility, and safety. In this post, we'll walk through the key concepts from virtual memory to the buddy allocator.</p>
+
+      <h2>Virtual Memory: The Abstraction Layer</h2>
+      <p>Every process in Linux operates in its own virtual address space. This is a powerful abstraction — from the process's perspective, it has access to the entire address space (e.g., 0 to 2⁴⁸ on a 64-bit system), even though physical RAM is shared across all processes.</p>
+
+      <blockquote>
+        Virtual memory decouples a process's logical view of memory from the physical hardware, enabling isolation, security, and efficient sharing.
+      </blockquote>
+
+      <p>The kernel maps virtual addresses to physical addresses using <strong>page tables</strong>. On x86-64, this is a four-level (or five-level on newer hardware) page table hierarchy: PGD → PUD → PMD → PTE.</p>
+
+      <h2>Page Tables and the MMU</h2>
+      <p>The Memory Management Unit (MMU) is a hardware component that performs virtual-to-physical address translation. When a process accesses memory, the CPU walks the page table to find the corresponding physical page frame.</p>
+
+      <pre><code>/* Simplified page table walk concept */
+unsigned long virt_to_phys(struct mm_struct *mm, unsigned long vaddr) {
+    pgd_t *pgd = pgd_offset(mm, vaddr);  // Level 1
+    p4d_t *p4d = p4d_offset(pgd, vaddr); // Level 2
+    pud_t *pud = pud_offset(p4d, vaddr); // Level 3
+    pmd_t *pmd = pmd_offset(pud, vaddr); // Level 4
+    pte_t *pte = pte_offset_kernel(pmd, vaddr); // Level 5
+
+    return (pte_val(*pte) & PAGE_MASK) | (vaddr & ~PAGE_MASK);
+}</code></pre>
+
+      <p>To avoid this expensive walk on every memory access, the CPU caches recent translations in the <strong>Translation Lookaside Buffer (TLB)</strong>. A TLB miss triggers the full page table walk.</p>
+
+      <h2>Page Faults</h2>
+      <p>When a process accesses a virtual address that isn't currently mapped to a physical page, the CPU raises a <strong>page fault</strong> exception. The kernel's page fault handler then decides what to do:</p>
+      <ul>
+        <li><strong>Minor fault</strong> — the page is in memory but not mapped (e.g., demand paging). The kernel maps it and resumes.</li>
+        <li><strong>Major fault</strong> — the page is on disk (swapped out). The kernel reads it back from swap, maps it, and resumes.</li>
+        <li><strong>Segfault</strong> — invalid access. The kernel sends <code>SIGSEGV</code> to the process.</li>
+      </ul>
+
+      <h2>Physical Memory Management: The Buddy Allocator</h2>
+      <p>For managing physical page frames, Linux uses the <strong>Buddy Allocator</strong>. Physical memory is divided into blocks of sizes that are powers of 2 (1, 2, 4, 8, … pages). When an allocation is requested, the allocator finds the smallest fitting block.</p>
+
+      <pre><code># View buddy allocator state:
+cat /proc/buddyinfo
+
+# Example output:
+# Node 0, zone  DMA32    2  3  4  2  3  1  2  1  2  1  4
+# Each number is the count of free blocks of 2^n pages</code></pre>
+
+      <p>When a block is freed, if its "buddy" (adjacent block of the same size) is also free, they are merged into a larger block. This prevents external fragmentation at the page level.</p>
+
+      <h2>Slab Allocator</h2>
+      <p>For kernel objects smaller than a page (like <code>task_struct</code>, <code>inode</code>, etc.), Linux uses the <strong>Slab/SLUB Allocator</strong>. It maintains caches of pre-allocated objects to avoid the overhead of repeatedly allocating and freeing small structures.</p>
+
+      <pre><code># View slab cache info:
+sudo cat /proc/slabinfo | head -20
+
+# Or with slabtop:
+sudo slabtop</code></pre>
+
+      <h2>OOM Killer</h2>
+      <p>When the system runs out of memory and cannot free any more, the kernel's <strong>OOM (Out-of-Memory) Killer</strong> is invoked. It scores processes based on their memory usage, runtime, and niceness, then kills the process with the highest score to reclaim memory.</p>
+
+      <hr />
+
+      <h2>Conclusion</h2>
+      <p>Linux memory management is a beautifully engineered system. Virtual memory provides process isolation, page tables enable address translation, and allocators (buddy + slab) handle physical memory efficiently at different granularities. Understanding these internals helps you write more memory-efficient code and debug tricky issues like memory leaks or OOM kills.</p>
+
+      <p>In the next post, we'll look at how the kernel handles <strong>memory-mapped files</strong> and the <strong>page cache</strong>.</p>
+    </div>
+
+    <div style="margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border);">
+      <a href="index.html" class="back-btn">← Back to All Posts</a>
+    </div>
+  </article>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-name">&lt;Najmul Islam.dev/&gt;</p>
+      <p class="footer-copy">© 2025 Najmul Islam · Built with ❤️ and plain HTML</p>
+      <div class="footer-links">
+        <a href="https://github.com/najmulislamnajim" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
