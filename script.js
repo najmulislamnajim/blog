@@ -69,7 +69,9 @@
     let visible = 0;
 
     blogCards.forEach(card => {
-      const match = cat === 'all' || card.dataset.category === cat;
+      const categories = card.dataset.category ? card.dataset.category.split(' ') : [];
+      // const match = cat === 'all' || card.dataset.category === cat;
+      const match = cat === 'all' || categories.includes(cat);
       card.style.display = match ? '' : 'none';
       if (match) visible++;
     });
